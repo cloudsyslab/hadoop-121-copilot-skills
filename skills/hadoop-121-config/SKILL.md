@@ -706,3 +706,33 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ```
 
 Use the detected `groupN-1` hostname and inferred `groupN-2` hostname instead of hard-coding `group1-1` and `group1-2`.
+
+## Required SSH Key Setup Before VM Cloning
+
+After configuring the Hadoop files, the assistant must verify that the current user's SSH public key is present in `~/.ssh/authorized_keys`.
+
+This step is required before the VM is cloned. The cloned VM must already contain the public key in `authorized_keys` so that passwordless SSH can work between the two VMs after `/etc/hosts` is updated.
+
+The assistant must use the following safe shell logic:
+
+```bash
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+if [ ! -f ~/.ssh/id_rsa.pub ]; then
+    ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+fi
+
+touch ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+if grep -qxF "$(cat ~/.ssh/id_rsa.pub)" ~/.ssh/authorized_keys; then
+    echo "SSH public key is already present in ~/.ssh/authorized_keys."
+else
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    echo "SSH public key has been appended to ~/.ssh/authorized_keys."
+fi
+```
+
+The assistant must not duplicate the key if it is already present.
+
