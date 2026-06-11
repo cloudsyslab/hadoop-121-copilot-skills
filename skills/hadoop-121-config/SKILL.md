@@ -1,7 +1,7 @@
 ---
 
 name: hadoop-121-config
-description: Use this skill when configuring Apache Hadoop 1.2.1 files for a two-VM instructional cluster. This skill prepares Hadoop configuration files only. It must not start Hadoop daemons, stop Hadoop daemons, or format the NameNode unless the user explicitly requests that after cloning and verification are complete.
+description: Use this skill when configuring Apache Hadoop 1.2.1 files for a two-VM instructional cluster. This skill prepares Hadoop configuration files and verifies that the current user's SSH public key is present in ~/.ssh/authorized_keys. It must not start Hadoop daemons, stop Hadoop daemons, or format the NameNode unless the user explicitly requests that after cloning and verification are complete.
 ---
 
 # Hadoop 1.2.1 Two-VM Configuration Skill
